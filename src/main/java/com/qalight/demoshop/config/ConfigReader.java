@@ -6,28 +6,40 @@ import java.util.Properties;
 
 public class ConfigReader {
 
-    private static final String CONFIG_FILE = "config.properties";
+    private static final String BASE_FILE = "config.properties";
+    private static final String LOCAL_FILE = "config.local.properties";
     private static final Properties properties = loadProperties();
 
     private ConfigReader() {
+        // utility class, no instances
     }
 
     private static Properties loadProperties() {
         Properties props = new Properties();
+        loadFromClasspath(props, BASE_FILE, true);
+        loadFromClasspath(props, LOCAL_FILE, false);
+        return props;
+    }
+
+    private static void loadFromClasspath(Properties target,
+                                          String fileName,
+                                          boolean required) {
         try (InputStream input = ConfigReader.class
                 .getClassLoader()
-                .getResourceAsStream(CONFIG_FILE)) {
+                .getResourceAsStream(fileName)) {
 
             if (input == null) {
-                throw new IllegalStateException(
-                        "Config file not found in classpath: " + CONFIG_FILE);
+                if (required) {
+                    throw new IllegalStateException(
+                            "Required config file not found in classpath: " + fileName);
+                }
+                return;
             }
-            props.load(input);
+            target.load(input);
         } catch (IOException e) {
             throw new IllegalStateException(
-                    "Failed to load config file: " + CONFIG_FILE, e);
+                    "Failed to load config file: " + fileName, e);
         }
-        return props;
     }
 
     public static String getBaseUrl() {
@@ -48,5 +60,13 @@ public class ConfigReader {
 
     public static String getScreenshotsDir() {
         return properties.getProperty("screenshots.dir", "build/screenshots");
+    }
+
+    public static String getTestUserEmail() {
+        return properties.getProperty("test.user.email");
+    }
+
+    public static String getTestUserPassword() {
+        return properties.getProperty("test.user.password");
     }
 }
