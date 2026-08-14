@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.qalight.demoshop'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Playwright — for browser automation
+    implementation 'com.microsoft.playwright:playwright:1.47.0'
+
+    // TestNG — for structuring tests
+    testImplementation 'org.testng:testng:7.10.2'
+}
+
+test {
+    useTestNG()
+    testLogging {
+        events "passed", "failed", "skipped"
+        showStandardStreams = true
+    }
+}
