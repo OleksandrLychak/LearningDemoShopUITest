@@ -24,4 +24,12 @@ test {
         showStandardStreams = true
     }
     failOnNoDiscoveredTests = false
+    tasks.register('installPlaywrightBrowsers', JavaExec) {
+        group = 'verification'
+        description = 'Downloads Playwright browsers on first run'
+        classpath = sourceSets.main.runtimeClasspath
+        mainClass = 'com.microsoft.playwright.CLI'
+        args = ['install']
+    }
+
 }
