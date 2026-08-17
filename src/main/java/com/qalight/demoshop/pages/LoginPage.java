@@ -2,8 +2,12 @@ package com.qalight.demoshop.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LoginPage extends BasePage {
+
+    private static final Logger LOG = LoggerFactory.getLogger(LoginPage.class);
 
     private final Locator emailInput;
     private final Locator passwordInput;
@@ -19,26 +23,31 @@ public class LoginPage extends BasePage {
     }
 
     public LoginPage open() {
+        LOG.info("Opening login page");
         page.navigate("/login");
         return this;
     }
 
     public LoginPage fillEmail(String email) {
+        LOG.info("Filling email: {}", email);
         emailInput.fill(email);
         return this;
     }
 
     public LoginPage fillPassword(String password) {
+        LOG.info("Filling password field");
         passwordInput.fill(password);
         return this;
     }
 
     public HomePage submitAndExpectSuccess() {
+        LOG.info("Submitting login form (expecting success)");
         loginButton.click();
         return new HomePage(page);
     }
 
     public LoginPage submitAndExpectFailure() {
+        LOG.info("Submitting login form (expecting failure)");
         loginButton.click();
         return this;
     }

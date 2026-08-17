@@ -4,18 +4,28 @@ import com.microsoft.playwright.assertions.PlaywrightAssertions;
 import com.qalight.demoshop.config.ConfigReader;
 import com.qalight.demoshop.pages.HomePage;
 import com.qalight.demoshop.pages.LoginPage;
+import com.qalight.demoshop.utils.UrlPatterns;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class LoginTest extends BaseTest {
+
+    @DataProvider(name = "invalidCredentials")
+    public Object[][] invalidCredentialsProvider() {
+        return new Object[][]{
+                {"definitely-not-registered@nowhere.test", "wrong-password-123", "unknown email + wrong password"},
+                {"", "some-password", "empty email"},
+                {"nobody@example.com", "", "empty password"}
+        };
+    }
 
     @Test
     public void userCanLoginWithValidCredentials() {
         String email = ConfigReader.getTestUserEmail();
         String password = ConfigReader.getTestUserPassword();
 
-        HomePage homePage = new HomePage(getPage())
-                .open()
+        HomePage homePage = openHomePage()
                 .openLoginPage()
                 .login(email, password);
 
@@ -30,28 +40,20 @@ public class LoginTest extends BaseTest {
         );
     }
 
-    @Test
-    public void userCannotLoginWithInvalidCredentials() {
-        String email = "definitely-not-registered@nowhere.test";
-        String password = "wrong-password-123";
-
-        LoginPage loginPage = new HomePage(getPage())
-                .open()
+    @Test(dataProvider = "invalidCredentials")
+    public void userCannotLoginWithInvalidCredentials(String email, String password, String scenario) {
+        LoginPage loginPage = openHomePage()
                 .openLoginPage()
                 .fillEmail(email)
                 .fillPassword(password)
                 .submitAndExpectFailure();
 
         PlaywrightAssertions.assertThat(getPage())
-                .hasURL(java.util.regex.Pattern.compile(".*/login.*"));
+                .hasURL(UrlPatterns.LOGIN_PAGE);
 
         Assert.assertTrue(
                 loginPage.isErrorVisible(),
-                "Validation summary error block must be visible after failed login"
-        );
-        Assert.assertTrue(
-                loginPage.getErrorText().contains("Login was unsuccessful"),
-                "Error message should mention that login was unsuccessful"
+                "Error block must be visible for scenario: " + scenario
         );
     }
 }

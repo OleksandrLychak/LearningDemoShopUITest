@@ -12,8 +12,7 @@ public class LogoutTest extends BaseTest {
         String email = ConfigReader.getTestUserEmail();
         String password = ConfigReader.getTestUserPassword();
 
-        HomePage homePage = new HomePage(getPage())
-                .open()
+        HomePage homePage = openHomePage()
                 .openLoginPage()
                 .login(email, password);
 

@@ -1,5 +1,7 @@
 package com.qalight.demoshop.helpers;
 
+import com.qalight.demoshop.models.User;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -14,24 +16,29 @@ public class TestData {
     private static final AtomicInteger COUNTER = new AtomicInteger(0);
 
     private TestData() {
-
+        // utility class, no instances
     }
 
-    public static String generateUniqueEmail() {
-        String timestamp = LocalDateTime.now().format(TIMESTAMP);
+    public static User generateUser() {
         int counter = COUNTER.incrementAndGet();
-        return EMAIL_PREFIX + "+" + timestamp + "_" + counter + EMAIL_DOMAIN;
+        String timestamp = LocalDateTime.now().format(TIMESTAMP);
+        String email = EMAIL_PREFIX + "+" + timestamp + "_" + counter + EMAIL_DOMAIN;
+
+        return new User(
+                "TestFirst" + counter,
+                "TestLast" + counter,
+                email,
+                DEFAULT_PASSWORD,
+                User.Gender.MALE
+        );
+    }
+
+    @Deprecated
+    public static String generateUniqueEmail() {
+        return generateUser().getEmail();
     }
 
     public static String defaultPassword() {
         return DEFAULT_PASSWORD;
-    }
-
-    public static String generateFirstName() {
-        return "TestFirst" + COUNTER.get();
-    }
-
-    public static String generateLastName() {
-        return "TestLast" + COUNTER.get();
     }
 }
