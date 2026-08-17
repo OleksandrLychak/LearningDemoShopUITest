@@ -10,26 +10,28 @@ repositories {
 }
 
 dependencies {
-    // Playwright — for browser automation
+    // Playwright - for browser automation
     implementation 'com.microsoft.playwright:playwright:1.47.0'
 
-    // TestNG — for structuring tests
+    // TestNG - for structuring tests
     testImplementation 'org.testng:testng:7.10.2'
 }
 
 test {
-    useTestNG()
+    useTestNG {
+        suites 'src/test/resources/testng.xml'
+    }
     testLogging {
         events "passed", "failed", "skipped"
         showStandardStreams = true
     }
     failOnNoDiscoveredTests = false
-    tasks.register('installPlaywrightBrowsers', JavaExec) {
-        group = 'verification'
-        description = 'Downloads Playwright browsers on first run'
-        classpath = sourceSets.main.runtimeClasspath
-        mainClass = 'com.microsoft.playwright.CLI'
-        args = ['install']
-    }
+}
 
+tasks.register('installPlaywrightBrowsers', JavaExec) {
+    group = 'verification'
+    description = 'Downloads Playwright browsers on first run'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.microsoft.playwright.CLI'
+    args = ['install']
 }
