@@ -15,6 +15,9 @@ dependencies {
 
     // TestNG - for structuring tests
     testImplementation 'org.testng:testng:7.10.2'
+
+    // Logback - SLF4J implementation for structured logging
+    implementation 'ch.qos.logback:logback-classic:1.5.6'
 }
 
 test {

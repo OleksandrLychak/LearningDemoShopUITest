@@ -10,8 +10,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ScreenshotListener implements ITestListener {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ScreenshotListener.class);
 
     private static final DateTimeFormatter TIMESTAMP =
             DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
@@ -20,7 +24,7 @@ public class ScreenshotListener implements ITestListener {
     public void onTestFailure(ITestResult result) {
         Page page = extractPage(result);
         if (page == null) {
-            System.out.println("ScreenshotListener: no Page available, skipping screenshot");
+            LOG.warn("No Page available, skipping screenshot");;
             return;
         }
 
@@ -31,9 +35,9 @@ public class ScreenshotListener implements ITestListener {
             page.screenshot(new Page.ScreenshotOptions()
                     .setPath(Paths.get(screenshotPath))
                     .setFullPage(true));
-            System.out.println("Screenshot saved: " + screenshotPath);
+            LOG.info("Screenshot saved: {}", screenshotPath);
         } catch (Exception e) {
-            System.out.println("ScreenshotListener: failed to save screenshot - " + e.getMessage());
+            LOG.error("Failed to save screenshot", e);
         }
     }
 
