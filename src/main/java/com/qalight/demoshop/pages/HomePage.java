@@ -17,7 +17,7 @@ public class HomePage extends BasePage {
         this.registerLink = page.locator(".ico-register");
         this.loginLink = page.locator(".ico-login");
         this.logoutLink = page.locator(".ico-logout");
-        this.accountLink = page.locator(".account");
+        this.accountLink = page.locator(".account:not(:has-text('My account'))");
         this.searchInput = page.locator("#small-searchterms");
         this.searchButton = page.locator(".search-box-button");
     }
