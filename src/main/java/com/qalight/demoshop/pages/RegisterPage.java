@@ -4,6 +4,7 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.qalight.demoshop.models.User;
 
 public class RegisterPage extends BasePage {
 
@@ -84,16 +85,20 @@ public class RegisterPage extends BasePage {
         return this;
     }
 
-    public RegisterPage registerAsMale(String firstName,
-                                       String lastName,
-                                       String email,
-                                       String password) {
-        return selectMale()
-                .fillFirstName(firstName)
-                .fillLastName(lastName)
-                .fillEmail(email)
-                .fillPassword(password)
-                .fillConfirmPassword(password)
+    public RegisterPage register(User user) {
+        LOG.info("Registering user: {}", user);
+
+        if (user.getGender() == User.Gender.MALE) {
+            selectMale();
+        } else {
+            selectFemale();
+        }
+
+        return fillFirstName(user.getFirstName())
+                .fillLastName(user.getLastName())
+                .fillEmail(user.getEmail())
+                .fillPassword(user.getPassword())
+                .fillConfirmPassword(user.getPassword())
                 .submit();
     }
 }

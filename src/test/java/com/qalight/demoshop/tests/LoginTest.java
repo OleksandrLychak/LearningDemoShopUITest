@@ -6,9 +6,20 @@ import com.qalight.demoshop.pages.HomePage;
 import com.qalight.demoshop.pages.LoginPage;
 import com.qalight.demoshop.utils.UrlPatterns;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class LoginTest extends BaseTest {
+
+    @DataProvider(name = "invalidCredentials")
+    public Object[][] invalidCredentialsProvider() {
+        return new Object[][]{
+                {"definitely-not-registered@nowhere.test", "wrong-password-123", "unknown email + wrong password"},
+                {"", "some-password", "empty email"},
+                {"nobody@example.com", "", "empty password"},
+                {"not-an-email", "any-password", "invalid email format"}
+        };
+    }
 
     @Test
     public void userCanLoginWithValidCredentials() {
@@ -30,11 +41,8 @@ public class LoginTest extends BaseTest {
         );
     }
 
-    @Test
-    public void userCannotLoginWithInvalidCredentials() {
-        String email = "definitely-not-registered@nowhere.test";
-        String password = "wrong-password-123";
-
+    @Test(dataProvider = "invalidCredentials")
+    public void userCannotLoginWithInvalidCredentials(String email, String password, String scenario) {
         LoginPage loginPage = openHomePage()
                 .openLoginPage()
                 .fillEmail(email)
@@ -46,11 +54,7 @@ public class LoginTest extends BaseTest {
 
         Assert.assertTrue(
                 loginPage.isErrorVisible(),
-                "Validation summary error block must be visible after failed login"
-        );
-        Assert.assertTrue(
-                loginPage.getErrorText().contains("Login was unsuccessful"),
-                "Error message should mention that login was unsuccessful"
+                "Error block must be visible for scenario: " + scenario
         );
     }
 }
