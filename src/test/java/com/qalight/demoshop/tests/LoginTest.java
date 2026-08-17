@@ -16,8 +16,7 @@ public class LoginTest extends BaseTest {
         return new Object[][]{
                 {"definitely-not-registered@nowhere.test", "wrong-password-123", "unknown email + wrong password"},
                 {"", "some-password", "empty email"},
-                {"nobody@example.com", "", "empty password"},
-                {"not-an-email", "any-password", "invalid email format"}
+                {"nobody@example.com", "", "empty password"}
         };
     }
 

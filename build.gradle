@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'io.qameta.allure' version '2.11.2'
 }
 
 group = 'com.qalight.demoshop'
@@ -10,25 +11,23 @@ repositories {
 }
 
 dependencies {
-    // Playwright - for browser automation
     implementation 'com.microsoft.playwright:playwright:1.47.0'
-
-    // TestNG - for structuring tests
     testImplementation 'org.testng:testng:7.10.2'
-
-    // Logback - SLF4J implementation for structured logging
     implementation 'ch.qos.logback:logback-classic:1.5.6'
+    testImplementation 'io.qameta.allure:allure-testng:2.24.0'
+}
+
+allure {
+    version = '2.24.0'
+    autoconfigure = true
 }
 
 test {
-    useTestNG {
-        suites 'src/test/resources/testng.xml'
-    }
+    useTestNG()
     testLogging {
         events "passed", "failed", "skipped"
         showStandardStreams = true
     }
-    failOnNoDiscoveredTests = false
 }
 
 tasks.register('installPlaywrightBrowsers', JavaExec) {
