@@ -1,10 +1,8 @@
 package com.qalight.demoshop.tests;
 
 import com.microsoft.playwright.assertions.PlaywrightAssertions;
-import com.qalight.demoshop.pages.HomePage;
+import com.qalight.demoshop.utils.UrlPatterns;
 import org.testng.annotations.Test;
-
-import java.util.regex.Pattern;
 
 public class SearchTest extends BaseTest {
 
@@ -12,14 +10,12 @@ public class SearchTest extends BaseTest {
     public void userCanSearchForProduct() {
         String searchQuery = "computer";
 
-        new HomePage(getPage())
-                .open()
-                .searchFor(searchQuery);
+        openHomePage().searchFor(searchQuery);
 
         PlaywrightAssertions.assertThat(getPage())
-                .hasURL(Pattern.compile(".*/search.*"));
+                .hasURL(UrlPatterns.SEARCH_PAGE);
 
         PlaywrightAssertions.assertThat(getPage())
-                .hasTitle(Pattern.compile(".*Search.*"));
+                .hasTitle(UrlPatterns.SEARCH_TITLE);
     }
 }

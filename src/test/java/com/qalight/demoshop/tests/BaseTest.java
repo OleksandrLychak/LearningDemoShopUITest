@@ -1,5 +1,6 @@
 package com.qalight.demoshop.tests;
 
+import com.qalight.demoshop.pages.HomePage;
 import com.microsoft.playwright.Page;
 import com.qalight.demoshop.driver.DriverFactory;
 import com.qalight.demoshop.driver.ScreenshotListener;
@@ -35,5 +36,9 @@ public abstract class BaseTest {
 
     public Page getPage() {
         return page;
+    }
+
+    protected HomePage openHomePage() {
+        return new HomePage(getPage()).open();
     }
 }

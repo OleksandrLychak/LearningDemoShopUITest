@@ -4,6 +4,7 @@ import com.microsoft.playwright.assertions.PlaywrightAssertions;
 import com.qalight.demoshop.config.ConfigReader;
 import com.qalight.demoshop.pages.HomePage;
 import com.qalight.demoshop.pages.LoginPage;
+import com.qalight.demoshop.utils.UrlPatterns;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -14,8 +15,7 @@ public class LoginTest extends BaseTest {
         String email = ConfigReader.getTestUserEmail();
         String password = ConfigReader.getTestUserPassword();
 
-        HomePage homePage = new HomePage(getPage())
-                .open()
+        HomePage homePage = openHomePage()
                 .openLoginPage()
                 .login(email, password);
 
@@ -35,15 +35,14 @@ public class LoginTest extends BaseTest {
         String email = "definitely-not-registered@nowhere.test";
         String password = "wrong-password-123";
 
-        LoginPage loginPage = new HomePage(getPage())
-                .open()
+        LoginPage loginPage = openHomePage()
                 .openLoginPage()
                 .fillEmail(email)
                 .fillPassword(password)
                 .submitAndExpectFailure();
 
         PlaywrightAssertions.assertThat(getPage())
-                .hasURL(java.util.regex.Pattern.compile(".*/login.*"));
+                .hasURL(UrlPatterns.LOGIN_PAGE);
 
         Assert.assertTrue(
                 loginPage.isErrorVisible(),
