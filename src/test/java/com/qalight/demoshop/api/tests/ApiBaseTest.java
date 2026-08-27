@@ -45,6 +45,16 @@ public abstract class ApiBaseTest {
         if (context != null) context.close();
         if (browser != null) browser.close();
         if (playwright != null) playwright.close();
+
+        sleepBriefly();
+    }
+
+    private void sleepBriefly() {
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 
     protected SlotCityApiClient getApiClient() {
