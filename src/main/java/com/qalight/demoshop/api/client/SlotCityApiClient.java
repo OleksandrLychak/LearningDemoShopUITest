@@ -74,6 +74,14 @@ public class SlotCityApiClient {
     private <T> T parse(APIResponse response, Class<T> type) {
         String bodyText = response.text();
         LOG.info("Response [{}]: {}", response.status(), bodyText);
+
+        if (response.status() >= 500) {
+            throw new IllegalStateException(
+                    "Server returned " + response.status() + " (likely Cloudflare "
+                            + "rate limiting or a challenge page) instead of a valid API response. "
+                            + "Body: " + bodyText.substring(0, Math.min(200, bodyText.length())));
+        }
+
         return GSON.fromJson(bodyText, type);
     }
 
