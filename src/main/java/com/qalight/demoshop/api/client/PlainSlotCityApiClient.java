@@ -8,6 +8,7 @@ import com.qalight.demoshop.api.models.AuthResponse;
 import com.qalight.demoshop.api.models.GuestResponse;
 import com.qalight.demoshop.api.models.PromoCodeResponse;
 
+
 public class PlainSlotCityApiClient implements ApiClient {
 
     private static final Gson GSON = new Gson();
@@ -22,9 +23,9 @@ public class PlainSlotCityApiClient implements ApiClient {
     public AuthResponse register(String email, String password) {
         String body = registerPayload(email, password);
         APIResponse response = request.post(
-                "/auth/v2/register?on_device=true",
+                ApiEndpoints.register(),
                 RequestOptions.create()
-                        .setHeader("Content-Type", "application/json")
+                        .setHeader(ApiHeader.CONTENT_TYPE.headerName(), "application/json")
                         .setData(body)
         );
         return parse(response, AuthResponse.class);
@@ -34,9 +35,9 @@ public class PlainSlotCityApiClient implements ApiClient {
     public AuthResponse login(String email, String password) {
         String body = loginPayload(email, password);
         APIResponse response = request.post(
-                "/auth/login?on_device=true",
+                ApiEndpoints.login(),
                 RequestOptions.create()
-                        .setHeader("Content-Type", "application/json")
+                        .setHeader(ApiHeader.CONTENT_TYPE.headerName(), "application/json")
                         .setData(body)
         );
         return parse(response, AuthResponse.class);
@@ -44,17 +45,17 @@ public class PlainSlotCityApiClient implements ApiClient {
 
     @Override
     public GuestResponse getGuestSession() {
-        APIResponse response = request.get("/auth/guest");
+        APIResponse response = request.get(ApiEndpoints.guestSession());
         return parse(response, GuestResponse.class);
     }
 
     @Override
     public PromoCodeResponse activatePromoCode(String token, String code) {
         APIResponse response = request.post(
-                "/apiv2/promocodes/activate",
+                ApiEndpoints.activatePromoCode(),
                 RequestOptions.create()
-                        .setHeader("Content-Type", "application/json")
-                        .setHeader("Authorization", "Bearer " + token)
+                        .setHeader(ApiHeader.CONTENT_TYPE.headerName(), "application/json")
+                        .setHeader(ApiHeader.AUTHORIZATION.headerName(), "Bearer " + token)
                         .setData("{\"code\":\"" + code + "\"}")
         );
         return parse(response, PromoCodeResponse.class);
