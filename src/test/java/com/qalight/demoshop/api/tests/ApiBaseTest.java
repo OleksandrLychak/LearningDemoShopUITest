@@ -60,7 +60,7 @@ public abstract class ApiBaseTest {
     protected SlotCityApiClient getApiClient() {
         return apiClient;
     }
-    
+
     protected APIRequestContext getApiRequestContext() {
         return context.request();
     }
