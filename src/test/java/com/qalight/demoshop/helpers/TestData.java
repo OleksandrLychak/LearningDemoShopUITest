@@ -33,11 +33,6 @@ public class TestData {
         );
     }
 
-    @Deprecated
-    public static String generateUniqueEmail() {
-        return generateUser().getEmail();
-    }
-
     public static String defaultPassword() {
         return DEFAULT_PASSWORD;
     }

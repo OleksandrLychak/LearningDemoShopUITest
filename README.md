@@ -90,9 +90,12 @@ test.user.password=your-password
 ./gradlew test
 ```
 
-Тести запускаються через `src/test/resources/testng.xml` як suite
-"Demo Web Shop UI Suite". Тривалість повного прогону - 15-20 секунд
-для 5 тестів.
+Тести запускаються через звичайний TestNG classpath scan (`useTestNG()`
+у `build.gradle`, без явного suite-файлу). Файл `src/test/resources/testng.xml`
+залишений у репозиторії як приклад suite-конфігурації - не підключений
+через конфлікт Gradle 9 з TestNG `@DataProvider` (детальніше в історії комітів
+`feature/refactor`). Повний прогін - 21 тест (7 UI + 4 API + 5 design patterns),
+займає 1-1.5 хвилини через реальні мережеві виклики і Cloudflare warm-up.
 
 ### Запустити конкретний тест-клас
 
