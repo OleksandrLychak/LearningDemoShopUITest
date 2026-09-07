@@ -74,6 +74,10 @@ Playwright використовує власні збірки браузерів
 test.user.email=your-registered-email@example.com
 test.user.password=your-password
 ```
+**Важливо:** без цього кроку `LoginTest` і `LogoutTest` (2 з 21 тестів у проєкті)
+впадуть з `AssertionError`, бо намагатимуться залогінитись плейсхолдером
+`CHANGE_ME_IN_LOCAL_PROPERTIES` замість реального акаунту. Це очікувана
+поведінка - не bug, а сигнал "налаштуй credentials перед запуском".
 
 Використай реальний акаунт, зареєстрований на demowebshop.tricentis.com.
 Якщо його нема - зареєструйся вручну через `/register` перед запуском.
