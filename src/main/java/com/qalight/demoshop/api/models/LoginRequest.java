@@ -9,13 +9,10 @@ import lombok.ToString;
 @ToString(exclude = "password")
 public class LoginRequest {
 
+    @Builder.Default
+    private final String type = "email";
     private final String email;
     private final String password;
-    private final String deviceId;
-
-    public String toJson() {
-        return String.format(
-                "{\"type\":\"email\",\"email\":\"%s\",\"password\":\"%s\",\"device\":{\"device_id\":\"%s\"}}",
-                email, password, deviceId);
-    }
+    @Builder.Default
+    private final Device device = Device.testDevice();
 }

@@ -1,19 +1,16 @@
 package com.qalight.demoshop.api.tests;
 
+import com.qalight.demoshop.api.helpers.ApiTestDataBuilders;
 import com.qalight.demoshop.api.models.LoginRequest;
 import com.qalight.demoshop.api.models.PromoCodeRequest;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-
 public class BuilderPatternTest {
 
     @Test
     public void manualBuilderProducesCorrectRequest() {
-        PromoCodeRequest request = PromoCodeRequest.builder()
-                .code("STAGTEST")
-                .autoApply(true)
-                .build();
+        PromoCodeRequest request = ApiTestDataBuilders.validPromoCodeRequest();
 
         Assert.assertEquals(request.getCode(), "STAGTEST");
         Assert.assertEquals(request.getSource(), "web",
@@ -23,30 +20,23 @@ public class BuilderPatternTest {
 
     @Test(expectedExceptions = IllegalStateException.class)
     public void manualBuilderRejectsMissingCode() {
-        PromoCodeRequest.builder()
-                .autoApply(true)
-                .build();
+        ApiTestDataBuilders.promoCodeRequestMissingCode();
     }
 
     @Test
     public void lombokBuilderProducesCorrectRequest() {
-        LoginRequest request = LoginRequest.builder()
-                .email("test@sharkscode.com")
-                .password("secret123")
-                .deviceId("device-abc")
-                .build();
+        LoginRequest request = ApiTestDataBuilders.validLoginRequest(
+                "test@sharkscode.com", "secret123");
 
         Assert.assertEquals(request.getEmail(), "test@sharkscode.com");
-        Assert.assertEquals(request.getDeviceId(), "device-abc");
+        Assert.assertNotNull(request.getDevice(),
+                "Device should default via @Builder.Default when not explicitly set");
     }
 
     @Test
     public void lombokGeneratedToStringExcludesPassword() {
-        LoginRequest request = LoginRequest.builder()
-                .email("test@sharkscode.com")
-                .password("secret123")
-                .deviceId("device-abc")
-                .build();
+        LoginRequest request = ApiTestDataBuilders.validLoginRequest(
+                "test@sharkscode.com", "secret123");
 
         String result = request.toString();
 

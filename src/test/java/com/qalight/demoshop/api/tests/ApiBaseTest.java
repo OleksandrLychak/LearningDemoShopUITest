@@ -3,14 +3,16 @@ package com.qalight.demoshop.api.tests;
 import com.microsoft.playwright.APIRequestContext;
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserContext;
+import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
-import com.qalight.demoshop.api.client.SlotCityApiClient;
+import com.qalight.demoshop.api.client.ApiClient;
+import com.qalight.demoshop.api.client.PlainSlotCityApiClient;
+import com.qalight.demoshop.api.client.decorator.LoggingApiClientDecorator;
 import com.qalight.demoshop.api.config.ApiConfigReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
-import com.microsoft.playwright.Page;
 
 public abstract class ApiBaseTest {
 
@@ -19,7 +21,7 @@ public abstract class ApiBaseTest {
     private Playwright playwright;
     private Browser browser;
     private BrowserContext context;
-    private SlotCityApiClient apiClient;
+    private ApiClient apiClient;
 
     @BeforeMethod(alwaysRun = true)
     public void setUp() {
@@ -36,7 +38,7 @@ public abstract class ApiBaseTest {
         warmUpPage.close();
 
         APIRequestContext request = context.request();
-        apiClient = new SlotCityApiClient(request);
+        apiClient = new LoggingApiClientDecorator(new PlainSlotCityApiClient(request));
         LOG.info("API client ready");
     }
 
@@ -57,7 +59,7 @@ public abstract class ApiBaseTest {
         }
     }
 
-    protected SlotCityApiClient getApiClient() {
+    protected ApiClient getApiClient() {
         return apiClient;
     }
 
