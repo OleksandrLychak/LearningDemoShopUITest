@@ -5,7 +5,6 @@ import com.qalight.demoshop.api.models.PromoCodeRequest;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-
 public class BuilderPatternTest {
 
     @Test
@@ -33,11 +32,11 @@ public class BuilderPatternTest {
         LoginRequest request = LoginRequest.builder()
                 .email("test@sharkscode.com")
                 .password("secret123")
-                .deviceId("device-abc")
                 .build();
 
         Assert.assertEquals(request.getEmail(), "test@sharkscode.com");
-        Assert.assertEquals(request.getDeviceId(), "device-abc");
+        Assert.assertNotNull(request.getDevice(),
+                "Device should default via @Builder.Default when not explicitly set");
     }
 
     @Test
@@ -45,7 +44,6 @@ public class BuilderPatternTest {
         LoginRequest request = LoginRequest.builder()
                 .email("test@sharkscode.com")
                 .password("secret123")
-                .deviceId("device-abc")
                 .build();
 
         String result = request.toString();
