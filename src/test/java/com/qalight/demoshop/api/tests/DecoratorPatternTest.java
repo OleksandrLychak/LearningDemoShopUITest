@@ -1,8 +1,8 @@
 package com.qalight.demoshop.api.tests;
 
 import com.qalight.demoshop.api.client.ApiClient;
-import com.qalight.demoshop.api.client.LoggingApiClientDecorator;
 import com.qalight.demoshop.api.client.PlainSlotCityApiClient;
+import com.qalight.demoshop.api.client.decorator.LoggingApiClientDecorator;
 import com.qalight.demoshop.api.helpers.ApiTestData;
 import com.qalight.demoshop.api.models.AuthResponse;
 import org.testng.Assert;

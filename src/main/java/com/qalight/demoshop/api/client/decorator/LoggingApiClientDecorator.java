@@ -1,5 +1,6 @@
-package com.qalight.demoshop.api.client;
+package com.qalight.demoshop.api.client.decorator;
 
+import com.qalight.demoshop.api.client.ApiClient;
 import com.qalight.demoshop.api.models.AuthResponse;
 import com.qalight.demoshop.api.models.GuestResponse;
 import com.qalight.demoshop.api.models.PromoCodeResponse;
